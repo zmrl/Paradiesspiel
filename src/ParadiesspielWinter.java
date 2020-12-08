@@ -64,7 +64,10 @@ public class ParadiesspielWinter extends Paradiesspiel{
         } else {
             int counter = 1;
             for (Farben colour : this.farben) {
-                this.playerTable.put(counter++, new Player(colour.toString(), MAX_TOKENS_PER_PLAYER));
+                this.playerTable.put(counter++, new Player.Builder()
+                        .setColour(colour.toString())
+                        .setTokenTable(MAX_TOKENS_PER_PLAYER)
+                        .build());
             }
         }
     }
