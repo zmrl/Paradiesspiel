@@ -45,12 +45,6 @@ public class Paradiesspiel {
             FIELDS.put(MAX_FIELDS - 1, FieldTypes.PARADIES);
         }
 
-        private static final Hashtable<Integer, Field> test;
-            static {
-                test = new Hashtable<>();
-                test.put(0, new Field(0, FieldTypes.START));
-            }
-
     public Paradiesspiel(Farben... farben) {
         this.farben = farben;
         this.init();
@@ -82,11 +76,17 @@ public class Paradiesspiel {
 
     public void setFields(){
         for(int i = 0; i < MAX_FIELDS; i++){
-            this.fieldTable.put(i, new Field(i, FieldTypes.STANDARD));
+            this.fieldTable.put(i, new Field.Builder()
+                    .fieldNumber(i)
+                    .fieldType(FieldTypes.STANDARD)
+                    .build());
         }
 
         FIELDS.forEach((k, v) -> {
-            this.fieldTable.put(k, new Field(k, v));
+            this.fieldTable.put(k, new Field.Builder()
+                    .fieldNumber(k)
+                    .fieldType(v)
+                    .build());
         });
     }
 

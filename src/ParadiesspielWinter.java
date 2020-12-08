@@ -42,11 +42,17 @@ public class ParadiesspielWinter extends Paradiesspiel{
     @Override
     public void setFields(){
         for(int i = 0; i < MAX_FIELDS; i++){
-            this.fieldTable.put(i, new Field(i, FieldTypes.STANDARD));
+            this.fieldTable.put(i, new Field.Builder()
+                    .fieldNumber(i)
+                    .fieldType(FieldTypes.STANDARD)
+                    .build());
         }
 
         FIELDS.forEach((k, v) -> {
-            this.fieldTable.put(k, new Field(k, v));
+            this.fieldTable.put(k, new Field.Builder()
+                    .fieldNumber(k)
+                    .fieldType(v)
+                    .build());
         });
     }
 
