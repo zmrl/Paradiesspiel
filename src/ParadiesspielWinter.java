@@ -9,6 +9,8 @@ import java.util.Hashtable;
  */
 public class ParadiesspielWinter extends Paradiesspiel{
 
+    // _____________________________________________________ CONSTANTS _______________________________________ //
+
     private static final int MAX_FIELDS = 70;
     private static final int MAX_TOKENS_PER_PLAYER = 3;
 
@@ -35,9 +37,13 @@ public class ParadiesspielWinter extends Paradiesspiel{
         FIELDS.put(MAX_FIELDS - 1, FieldTypes.PARADIES);
     }
 
+    // _____________________________________________________ CONSTRUCTOR _______________________________________ //
+
     public ParadiesspielWinter (Farben... farben){
         super(farben);
     }
+
+    // _____________________________________________________ SET _______________________________________ //
 
     @Override
     public void setFields(){

@@ -12,15 +12,18 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Paradiesspiel {
 
+    // _____________________________________________________ CLASS VARIABLES _______________________________________ //
+
     public Hashtable<Integer, Field> fieldTable = new Hashtable<>();
     public Hashtable<Integer, Player> playerTable = new Hashtable<>();
     public Farben[] farben;
+
+    // _____________________________________________________ CONSTANTS _______________________________________ //
 
     private static final int MAX_FIELDS = 64;
     private static final int MAX_TOKENS_PER_PLAYER = 2;
     private static final int MAX_PLAYER = 6;
     private static final int MIN_PLAYER = 2;
-    private static final boolean DEBUG = false;
 
 
     private static final Hashtable<Integer, FieldTypes> FIELDS;
@@ -45,10 +48,13 @@ public class Paradiesspiel {
             FIELDS.put(MAX_FIELDS - 1, FieldTypes.PARADIES);
         }
 
+    // _____________________________________________________ CONSTRUCTOR _______________________________________ //
+
     public Paradiesspiel(Farben... farben) {
         this.farben = farben;
         this.init();
     }
+
     public Paradiesspiel(String conf, Farben... farben) {
 
     }
@@ -61,18 +67,9 @@ public class Paradiesspiel {
             e.printStackTrace();
             e.getMessage();
         }
-
-
-        if(DEBUG){
-            this.fieldTable.forEach((k, v) -> {
-                System.out.print(v + ", ");
-            });
-            this.playerTable.forEach((k, v) -> {
-                System.out.print(v + " -> ");
-                System.out.println(v.getTokenCollection());
-            });
-        }
     }
+
+    // _____________________________________________________ SET _______________________________________ //
 
     public void setFields(){
         for(int i = 0; i < MAX_FIELDS; i++){
@@ -109,6 +106,8 @@ public class Paradiesspiel {
         return i < MIN_PLAYER || i > MAX_PLAYER;
     }
 
+    // _____________________________________________________ GET _______________________________________ //
+
     public Hashtable<Integer, Field> getFieldTable() {
         return fieldTable;
     }
@@ -121,6 +120,7 @@ public class Paradiesspiel {
         return this.playerTable.get(id);
     }
 
+    // _____________________________________________________ TO STRING _______________________________________ //
     @Override
     public String toString() {
         return this.playerTableToString() + "\n" + this.fieldTableToStrings();

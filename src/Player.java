@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Spieler
  */
 public class Player {
+
     private final String colour;
     private final Hashtable<String, Token> tokenTable;
     private boolean isPaused = false;

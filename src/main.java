@@ -11,7 +11,7 @@ public class main {
         System.out.println(p2);
         System.out.println();
 
-        //wirft exception --> zu viele spieler
+        // throws exception
         Paradiesspiel p3 = new Paradiesspiel(Farben.GELB, Farben.GELB, Farben.GELB, Farben.GELB, Farben.GELB, Farben.GELB, Farben.GELB );
         p1.getPlayerByID(1).getTokenByName("BLAU-A").setPosition(12);
         System.out.println(p3);
