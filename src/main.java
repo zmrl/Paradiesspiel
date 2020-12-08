@@ -1,5 +1,4 @@
 import enums.Farben;
-import exceptions.WrongPlayerCountException;
 
 public class main {
 

@@ -1,6 +1,6 @@
 import enums.Farben;
 import enums.FieldTypes;
-import exceptions.WrongPlayerCountException;
+import exceptions.FalscheSpielerzahlException;
 
 import java.util.Hashtable;
 
@@ -57,10 +57,10 @@ public class ParadiesspielWinter extends Paradiesspiel{
     }
 
     @Override
-    public void setPlayerTable() throws WrongPlayerCountException {
+    public void setPlayerTable() throws FalscheSpielerzahlException {
 
         if(isValidPlayerCount(this.farben.length)) {
-            throw new WrongPlayerCountException(this.farben.length);
+            throw new FalscheSpielerzahlException(this.farben.length);
         } else {
             int counter = 1;
             for (Farben colour : this.farben) {

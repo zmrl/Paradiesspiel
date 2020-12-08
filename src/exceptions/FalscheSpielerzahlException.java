@@ -1,9 +1,9 @@
 package exceptions;
 
-public class WrongPlayerCountException extends RuntimeException{
+public class FalscheSpielerzahlException extends RuntimeException{
     private int amount;
 
-    public WrongPlayerCountException(int amount){
+    public FalscheSpielerzahlException(int amount){
         this.amount = amount;
     }
 
