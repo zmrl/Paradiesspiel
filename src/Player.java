@@ -8,20 +8,12 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class Player {
     private final String colour;
-    private final Hashtable<String, Token> tokenTable = new Hashtable<>();
+    private final Hashtable<String, Token> tokenTable;
     private boolean isPaused = false;
 
-    public Player(String colour, int numberOfTokens) {
-        this.colour = colour;
-        setTokenTable(numberOfTokens);
-    }
-
-    public void setTokenTable(int numberOfTokens) {
-        String[] appendix = {"-A", "-B", "-C"};
-        for(int i = 0; i < numberOfTokens; i++) {
-            String name = this.colour + appendix[i];
-            this.tokenTable.put(name, new Token(name));
-        }
+    private Player(Builder builder){
+        this.colour = builder.colour;
+        this.tokenTable = builder.tokenTable;
     }
 
     public Token getTokenByName(String name){
@@ -65,5 +57,31 @@ public class Player {
 
         });
         return token_temp.toString();
+    }
+
+    // BUILDER
+
+    public static class Builder{
+        private String colour;
+        private Hashtable<String, Token> tokenTable;
+
+        public Builder setColour(String colour){
+            this.colour = colour;
+            return this;
+        }
+
+        public Builder setTokenTable(int numberOfTokens){
+            this.tokenTable = new Hashtable<>();
+            String[] appendix = {"-A", "-B", "-C"};
+            for(int i = 0; i < numberOfTokens; i++) {
+                String name = this.colour + appendix[i];
+                this.tokenTable.put(name, new Token(name));
+            }
+            return this;
+        }
+
+        public Player build(){
+            return new Player(this);
+        }
     }
 }
