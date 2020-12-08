@@ -1,8 +1,5 @@
 import enums.FieldTypes;
 
-import java.lang.module.ModuleDescriptor;
-import java.util.Arrays;
-
 /**
  * Feld Super
  */
@@ -10,12 +7,9 @@ public class Field {
     private int number;
     private FieldTypes type;
 
-    public Field(int number, FieldTypes type) {
-        this.number = number;
-        this.type = type;
-    }
-    public Field(FieldBuilder builder){
-
+    private Field(Builder builder){
+        this.number = builder.number;
+        this.type = builder.type;
     }
 
     public int getNumber() {
@@ -33,18 +27,22 @@ public class Field {
 
 
 
-    public static class FieldBuilder{
+    public static class Builder {
         private int number;
         private FieldTypes type;
 
-        public FieldBuilder fieldNumber(int number){
+        public Builder fieldNumber(int number){
             this.number = number;
             return this;
         }
 
-        public FieldBuilder fieldType(FieldTypes type){
+        public Builder fieldType(FieldTypes type){
             this.type = type;
             return this;
+        }
+
+        public Field build(){
+            return new Field(this);
         }
 
     }
