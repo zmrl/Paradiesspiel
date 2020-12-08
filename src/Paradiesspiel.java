@@ -22,6 +22,35 @@ public class Paradiesspiel {
     private static final int MIN_PLAYER = 2;
     private static final boolean DEBUG = false;
 
+
+    private static final Hashtable<Integer, FieldTypes> FIELDS;
+        static {
+            FIELDS = new Hashtable<>();
+            FIELDS.put(0, FieldTypes.START);
+            FIELDS.put(5, FieldTypes.PECH);
+            FIELDS.put(9, FieldTypes.PECH);
+            FIELDS.put(6, FieldTypes.BÜCKE);
+            FIELDS.put(14, FieldTypes.GLÜCK);
+            FIELDS.put(18, FieldTypes.GLÜCK);
+            FIELDS.put(27, FieldTypes.GLÜCK);
+            FIELDS.put(32, FieldTypes.GLÜCK);
+            FIELDS.put(36, FieldTypes.GLÜCK);
+            FIELDS.put(50, FieldTypes.GLÜCK);
+            FIELDS.put(19, FieldTypes.LABYRINTH);
+            FIELDS.put(24, FieldTypes.DESASTER);
+            FIELDS.put(41, FieldTypes.DESASTER);
+            FIELDS.put(54, FieldTypes.DESASTER);
+            FIELDS.put(52, FieldTypes.AUFSCHWUNG);
+            FIELDS.put(58, FieldTypes.NEUANFANG);
+            FIELDS.put(MAX_FIELDS - 1, FieldTypes.PARADIES);
+        }
+
+        private static final Hashtable<Integer, Field> test;
+            static {
+                test = new Hashtable<>();
+                test.put(0, new Field(0, FieldTypes.START));
+            }
+
     public Paradiesspiel(Farben... farben) {
         this.farben = farben;
         this.init();
@@ -51,38 +80,14 @@ public class Paradiesspiel {
         }
     }
 
-    public void setFields() {
-        for(int i = 0; i < MAX_FIELDS; i++) {
-            if(i == 5 || i == 9){
-                this.fieldTable.put(i, new Field(i, FieldTypes.PECH));
-            }
-            else if(i == 6){
-                this.fieldTable.put(i, new Field(i, FieldTypes.BÜCKE));
-            }
-            else if (i == 14 || i == 18 || i == 27 || i == 32 || i == 36 || i == 50) {
-                this.fieldTable.put(i, new Field(i, FieldTypes.GLÜCK));
-            }
-            else if(i == 19) {
-                this.fieldTable.put(i, new Field(i, FieldTypes.LABYRINTH));
-            }
-            else if(i == 24 || i == 41 || i == 54){
-                this.fieldTable.put(i, new Field(i, FieldTypes.DESASTER));
-            }
-            else if(i == 52) {
-                this.fieldTable.put(i, new Field(i, FieldTypes.AUFSCHWUNG));
-            }
-            else if(i == 58) {
-                this.fieldTable.put(i, new Field(i, FieldTypes.NEUANFANG));
-            }
-            else if(i == 63) {
-                this.fieldTable.put(i, new Field(i, FieldTypes.PARADIES));
-            }
-            else {
-                this.fieldTable.put(i, new Field(i, FieldTypes.STANDARD));
-            }
-
+    public void setFields(){
+        for(int i = 0; i < MAX_FIELDS; i++){
+            this.fieldTable.put(i, new Field(i, FieldTypes.STANDARD));
         }
 
+        FIELDS.forEach((k, v) -> {
+            this.fieldTable.put(k, new Field(k, v));
+        });
     }
 
     public void setPlayerTable() throws WrongPlayerCountException {
