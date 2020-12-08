@@ -31,12 +31,12 @@ public class Field {
         private int number;
         private FieldTypes type;
 
-        public Builder fieldNumber(int number){
+        public Builder setFieldNumber(int number){
             this.number = number;
             return this;
         }
 
-        public Builder fieldType(FieldTypes type){
+        public Builder setFieldType(FieldTypes type){
             this.type = type;
             return this;
         }
