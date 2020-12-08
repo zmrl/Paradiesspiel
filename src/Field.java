@@ -4,8 +4,8 @@ import enums.FieldTypes;
  * Feld Super
  */
 public class Field {
-    private int number;
-    private FieldTypes type;
+    private final int number;
+    private final FieldTypes type;
 
     private Field(Builder builder){
         this.number = builder.number;
