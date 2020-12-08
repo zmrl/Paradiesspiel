@@ -1,0 +1,5 @@
+package enums;
+
+public enum FieldTypes {
+    STANDARD, PARADIES, PECH, BÜCKE, GLÜCK, LABYRINTH, DESASTER, AUFSCHWUNG, NEUANFANG;
+}
