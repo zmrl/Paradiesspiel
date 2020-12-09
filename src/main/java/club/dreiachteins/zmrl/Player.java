@@ -44,7 +44,7 @@ public class Player {
     @Override
     public String toString() {
 
-        return "club.dreiachteins.zmrl.Player " + this.colour + " [" + this.tokenToString() + "]";
+        return "Player " + this.colour + " [" + this.tokenToString() + "]";
     }
 
     private String tokenToString(){

@@ -1,6 +1,6 @@
 package club.dreiachteins.zmrl;
 
-import club.dreiachteins.zmrl.enums.Farben;
+import club.dreiachteins.zmrl.enums.Farbe;
 
 import java.util.Collection;
 import java.util.Hashtable;
@@ -19,15 +19,15 @@ public class Paradiesspiel {
 
     // _____________________________________________________ CONSTRUCTOR _______________________________________ //
 
-    public Paradiesspiel(Farben... farben) {
+    public Paradiesspiel(Farbe... farben) {
         this.init(farben);
     }
 
-    public Paradiesspiel(String conf, Farben... farben) {
+    public Paradiesspiel(String conf, Farbe... farben) {
 
     }
 
-    public void init(Farben... farben){
+    public void init(Farbe... farben){
         this.fieldTable = new PlayingFieldGenerator.Builder()
                 .setFields(this.getClass().toString())
                 .build()

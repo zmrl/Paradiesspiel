@@ -1,6 +1,6 @@
 package club.dreiachteins.zmrl;
 
-import club.dreiachteins.zmrl.enums.Farben;
+import club.dreiachteins.zmrl.enums.Farbe;
 
 /**
  * club.dreiachteins.zmrl.Paradiesspiel Child
@@ -8,7 +8,7 @@ import club.dreiachteins.zmrl.enums.Farben;
 public class ParadiesspielWinter extends Paradiesspiel{
     // _____________________________________________________ CONSTRUCTOR _______________________________________ //
 
-    public ParadiesspielWinter (Farben... farben){
+    public ParadiesspielWinter (Farbe... farben){
         super(farben);
     }
 

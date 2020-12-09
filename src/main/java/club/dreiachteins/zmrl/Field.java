@@ -9,9 +9,13 @@ public class Field {
     private final int number;
     private final FieldTypes type;
 
-    protected Field(Builder builder){
-        this.number = builder.number;
-        this.type = builder.type;
+    protected Field(int number, FieldTypes type){
+        this.number = number;
+        this.type = type;
+    }
+
+    public void action(){
+
     }
 
     public int getNumber() {
@@ -27,23 +31,4 @@ public class Field {
         return "" + this.type + "[" + this.number + "]";
     }
 
-    public static class Builder {
-        private int number;
-        private FieldTypes type;
-
-        public Builder setFieldNumber(int number){
-            this.number = number;
-            return this;
-        }
-
-        public Builder setFieldType(FieldTypes type){
-            this.type = type;
-            return this;
-        }
-
-        public Field build(){
-            return new Field(this);
-        }
-
-    }
 }

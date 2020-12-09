@@ -1,6 +1,6 @@
 package club.dreiachteins.zmrl;
 
-import club.dreiachteins.zmrl.enums.Farben;
+import club.dreiachteins.zmrl.enums.Farbe;
 import club.dreiachteins.zmrl.exceptions.FalscheSpielerzahlException;
 
 import java.util.Hashtable;
@@ -27,7 +27,7 @@ public class PlayerGenerator {
         private static final int MAX_PLAYER = 6;
         private static final int MIN_PLAYER = 2;
 
-        public Builder setPlayerTable(String className, Farben... colours) throws FalscheSpielerzahlException{
+        public Builder setPlayerTable(String className, Farbe... colours) throws FalscheSpielerzahlException{
 
             if(!(isValidPlayerCount(colours.length))) {
                 throw new FalscheSpielerzahlException(colours.length);
@@ -40,7 +40,7 @@ public class PlayerGenerator {
                 }
                 this.playerTable = new Hashtable<>();
                 int counter = 1;
-                for (Farben colour : colours) {
+                for (Farbe colour : colours) {
                     this.playerTable.put(counter++, new Player.Builder()
                             .setColour(colour.toString())
                             .setTokenTable(maxTokens)
