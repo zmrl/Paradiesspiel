@@ -29,15 +29,16 @@ public class Paradiesspiel {
                 .setFields(this.getClass().toString())
                 .build();
 
-        this.party = new Party.Builder()
-                .setPlayerTable(this.getClass().toString(), farben)
+        this.party = new Party.Builder().setFarbe(farben)
+                .setPlayerTable()
+                .setTokenTable(this.getClass().toString())
                 .build();
     }
 
     // _____________________________________________________ METHODS _______________________________________ //
 
     public boolean bewegeFigur(String s, int i, int i1) {
-        return party.moveTokenFromPLayer(s, i, i1);
+        return party.moveToken(s, i, i1);
     }
 
     // _____________________________________________________ GET _______________________________________ //
@@ -57,7 +58,7 @@ public class Paradiesspiel {
     // _____________________________________________________ SET _______________________________________ //
 
     public void setFarbeAmZug(Farbe farbe) {
-
+        this.party.setPlayerOnTurn(farbe);
     }
 
     // _____________________________________________________ TO STRING _______________________________________ //

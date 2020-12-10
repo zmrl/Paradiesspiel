@@ -2,17 +2,20 @@ package club.dreiachteins.zmrl.player;
 
 import club.dreiachteins.zmrl.enums.Farbe;
 import club.dreiachteins.zmrl.exceptions.FalscheSpielerzahlException;
-import club.dreiachteins.zmrl.exceptions.SpielfigurNichtVorhandenException;
 
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Party {
 
     private final Hashtable<Farbe, Player> playerTable;
+    private final Hashtable<String, Token> tokenTable;
+    private Farbe playerOnTurn;
 
     private Party(Builder builder) {
         this.playerTable = builder.playerTable;
+        this.tokenTable = builder.tokenTable;
     }
 
     // ______________________________________| GET |__________________________________________________\\
@@ -34,24 +37,45 @@ public class Party {
     }
 
     public int getPositionFromToken(String token) {
-        int temp = -1;
-        try {
-            temp = getPLayerByTokenName(token).getTokenByName(token).getPosition();
-        } catch (SpielfigurNichtVorhandenException e){
-            e.printStackTrace();
-            e.getMessage();
+        if (isToken(token)){
+            return tokenTable.get(token).getPosition();
         }
-        return temp;
+        return -1;
     }
 
-    public boolean moveTokenFromPLayer(String token, int i, int j) {
-            return getPLayerByTokenName(token).setTokenPosition(token, i, j);
+    // ______________________________________| SET |__________________________________________________\\
+
+    public void setPlayerOnTurn(Farbe farbe) {
+        this.playerOnTurn = farbe;
+    }
+
+    // ______________________________________| IS |__________________________________________________\\
+
+    private boolean isToken(String token){
+        return tokenTable.containsKey(token);
+    }
+
+    private boolean isTokenFromPlayer(String token){
+        return this.playerOnTurn == (Farbe.valueOf(token.split("-")[0]));
+    }
+
+    // ______________________________________| Methods |__________________________________________________\\
+
+    public boolean moveToken(String token, int i, int j) {
+        if(isToken(token) && isTokenFromPlayer(token)){
+            return tokenTable.get(token).setPosition((i+j));
+        }
+        return false;
     }
 
     // ______________________________________| TO STRING |__________________________________________________\\
 
     @Override
     public String toString(){
+        return playerToString() + "\n" + tokenToString();
+    }
+
+    private String playerToString(){
         Player[] temp = new Player[playerTable.size()];
         playerTable.forEach((k, v) -> {
             temp[v.getPlayerCount()] = v;
@@ -59,35 +83,42 @@ public class Party {
         return Arrays.toString(temp);
     }
 
-
+    private String tokenToString(){
+        Token[] temp = new Token[tokenTable.size()];
+        tokenTable.forEach((k, v) -> {
+            temp[v.getTokenNumber()] = v;
+        } );
+        return Arrays.toString(temp);
+    }
 
     // ______________________________________| BUILDER |__________________________________________________\\
 
     public static class Builder {
-        public Hashtable<Farbe, Player> playerTable;
+        private Hashtable<Farbe, Player> playerTable;
+        private final Hashtable<String, Token> tokenTable = new Hashtable<>();
+        private Farbe[] farben;
 
         private static final int MAX_TOKENS_PER_PLAYER = 2;
         private static final int MAX_TOKENS_PER_PLAYER_WINTER = 3;
         private static final int MAX_PLAYER = 6;
         private static final int MIN_PLAYER = 2;
 
-        public Builder setPlayerTable(String className, Farbe... colours) throws FalscheSpielerzahlException{
+        public Builder setFarbe(Farbe... farben) {
+            this.farben = farben;
+            return this;
+        }
 
-            if(!(isValidPlayerCount(colours.length))) {
-                throw new FalscheSpielerzahlException(colours.length);
+        public Builder setPlayerTable() throws FalscheSpielerzahlException{
+
+            if(!(isValidPlayerCount(this.farben.length))) {
+                throw new FalscheSpielerzahlException(this.farben.length);
             } else {
-                int maxTokens;
-                if(className.equals("class club.dreiachteins.zmrl.ParadiesspielWinter")) {
-                    maxTokens = MAX_TOKENS_PER_PLAYER_WINTER;
-                } else {
-                    maxTokens = MAX_TOKENS_PER_PLAYER;
-                }
                 this.playerTable = new Hashtable<>();
+                int tokenNumber = 0;
                 int playerCounter = 0;
-                for (Farbe colour : colours) {
+                for (Farbe colour : this.farben) {
                     this.playerTable.put(colour, new Player.Builder()
                             .setColour(colour).setPlayerCount(playerCounter++)
-                            .setTokenTable(maxTokens)
                             .build());
                 }
             }
@@ -98,6 +129,33 @@ public class Party {
             return i >= MIN_PLAYER && i <= MAX_PLAYER;
         }
 
+
+
+        public Builder setTokenTable(String className){
+
+            int maxTokens;
+            if(className.equals("class club.dreiachteins.zmrl.ParadiesspielWinter")) {
+                maxTokens = MAX_TOKENS_PER_PLAYER_WINTER;
+            } else {
+                maxTokens = MAX_TOKENS_PER_PLAYER;
+            }
+
+            String[] appendix = {"-A", "-B", "-C"};
+            int counter = 0;
+            for(Farbe farbe : this.farben){
+                for(int i = 0; i < maxTokens; i++) {
+                    String name = farbe + appendix[i];
+                    this.tokenTable.put(name, new Token.Builder()
+                            .setName(name)
+                            .setTokenNumber(counter++)
+                            .build());
+                }
+            }
+
+            return this;
+        }
+
+
         public Party build(){
             return new Party(this);
         }
@@ -106,18 +164,7 @@ public class Party {
 
     /* ______________________________________| BIN |__________________________________________________
     *
-    * AtomicInteger counter = new AtomicInteger(1);
-        AtomicReference<String> player_temp = new AtomicReference<>("");
-        this.playerTable.forEach((k, v) -> {
-            if(counter.get() < this.playerTable.size()){
-                counter.getAndIncrement();
-                player_temp.updateAndGet(v1 -> v1 + v + "\n");
-            } else {
-                player_temp.updateAndGet(v1 -> v1 + v);
-            }
-
-        });
-        return player_temp.toString();
+    *
     *
     *
     *
