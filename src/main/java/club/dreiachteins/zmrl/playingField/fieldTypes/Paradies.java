@@ -1,31 +1,30 @@
-package club.dreiachteins.zmrl.fieldTypes;
+package club.dreiachteins.zmrl.playingField.fieldTypes;
 
-import club.dreiachteins.zmrl.Field;
+import club.dreiachteins.zmrl.playingField.Field;
 import club.dreiachteins.zmrl.enums.FieldTypes;
 
-public class Pech extends Field {
+public class Paradies extends Field {
 
-    private Pech(Builder builder){
+    public Paradies(Builder builder) {
         super(builder.number, builder.type);
     }
 
     @Override
     public void action() {
-        // Do Something
+        //
     }
 
     public static class Builder{
         private int number;
-        private final FieldTypes type = FieldTypes.PECH;
-
+        private final FieldTypes type = FieldTypes.PARADIES;
 
         public Builder setFieldNumber(int number){
             this.number = number;
             return this;
         }
 
-        public Pech build(){
-            return new Pech(this);
+        public Paradies build(){
+            return new Paradies(this);
         }
     }
 }

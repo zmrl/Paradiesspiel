@@ -1,11 +1,11 @@
-package club.dreiachteins.zmrl;
+package club.dreiachteins.zmrl.playingField;
 
 import club.dreiachteins.zmrl.enums.FieldTypes;
 
 /**
  * Feld Super
  */
-public class Field {
+public abstract class Field {
     private final int number;
     private final FieldTypes type;
 

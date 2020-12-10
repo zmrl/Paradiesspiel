@@ -1,5 +1,5 @@
 package club.dreiachteins.zmrl.enums;
 
 public enum Farbe {
-    BLAU, GRÜN, ROT, GELB;
+    BLAU, GELB, GRUEN, ROT, SCHWARZ, WEISS;
 }

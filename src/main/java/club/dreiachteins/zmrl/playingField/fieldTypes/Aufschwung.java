@@ -1,6 +1,6 @@
-package club.dreiachteins.zmrl.fieldTypes;
+package club.dreiachteins.zmrl.playingField.fieldTypes;
 
-import club.dreiachteins.zmrl.Field;
+import club.dreiachteins.zmrl.playingField.Field;
 import club.dreiachteins.zmrl.enums.FieldTypes;
 
 public class Aufschwung extends Field {

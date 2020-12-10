@@ -1,21 +1,18 @@
 package club.dreiachteins.zmrl;
 
 import club.dreiachteins.zmrl.enums.Farbe;
-
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
+import club.dreiachteins.zmrl.player.Party;
+import club.dreiachteins.zmrl.playingField.PlayingField;
 
 /**
- * club.dreiachteins.zmrl.Paradiesspiel Super
+ * Paradiesspiel Super
  */
 public class Paradiesspiel {
 
     // _____________________________________________________ CLASS VARIABLES _______________________________________ //
 
-    public Hashtable<Integer, Field> fieldTable;
-    public Hashtable<Integer, Player> playerTable;
+    public PlayingField playingField;
+    public Party party;
 
     // _____________________________________________________ CONSTRUCTOR _______________________________________ //
 
@@ -28,65 +25,44 @@ public class Paradiesspiel {
     }
 
     public void init(Farbe... farben){
-        this.fieldTable = new PlayingFieldGenerator.Builder()
+        this.playingField = new PlayingField.Builder()
                 .setFields(this.getClass().toString())
-                .build()
-                .getFieldTable();
+                .build();
 
-        this.playerTable = new PlayerGenerator.Builder()
+        this.party = new Party.Builder()
                 .setPlayerTable(this.getClass().toString(), farben)
-                .build()
-                .getPlayerTable();
+                .build();
     }
 
+    // _____________________________________________________ METHODS _______________________________________ //
+
+    public boolean bewegeFigur(String s, int i, int i1) {
+        return party.moveTokenFromPLayer(s, i, i1);
+    }
 
     // _____________________________________________________ GET _______________________________________ //
 
-    public Hashtable<Integer, Field> getFieldTable() {
-        return fieldTable;
+    public Farbe[] getAlleSpieler() {
+        return party.getPlayers();
     }
 
-    public Collection<Player> getPlayers() {
-        return playerTable.values();
+    public Farbe getGewinner() {
+        return Farbe.BLAU;
     }
 
-    public Player getPlayerByID(int id){
-        return this.playerTable.get(id);
+    public int getFigurposition(String figur) {
+        return this.party.getPositionFromToken(figur);
+    }
+
+    // _____________________________________________________ SET _______________________________________ //
+
+    public void setFarbeAmZug(Farbe farbe) {
+
     }
 
     // _____________________________________________________ TO STRING _______________________________________ //
     @Override
     public String toString() {
-        return this.playerTableToString() + "\n" + this.fieldTableToStrings();
-    }
-
-    private String fieldTableToStrings(){
-        AtomicInteger counter = new AtomicInteger(1);
-        AtomicReference<String> fields_temp = new AtomicReference<>("");
-        this.fieldTable.forEach((k, v) -> {
-            if(counter.get() < this.fieldTable.size()){
-                counter.getAndIncrement();
-                fields_temp.updateAndGet(v1 -> v1 + v + "->");
-            } else {
-                fields_temp.updateAndGet(v1 -> v1 + v);
-            }
-
-        });
-        return fields_temp.toString();
-    }
-
-    private String playerTableToString(){
-        AtomicInteger counter = new AtomicInteger(1);
-        AtomicReference<String> player_temp = new AtomicReference<>("");
-        this.playerTable.forEach((k, v) -> {
-            if(counter.get() < this.playerTable.size()){
-                counter.getAndIncrement();
-                player_temp.updateAndGet(v1 -> v1 + v + "\n");
-            } else {
-                player_temp.updateAndGet(v1 -> v1 + v);
-            }
-
-        });
-        return player_temp.toString();
+        return this.party + "\n" + this.playingField;
     }
 }

@@ -1,20 +1,32 @@
-package club.dreiachteins.zmrl;
+package club.dreiachteins.zmrl.playingField;
 
-import club.dreiachteins.zmrl.enums.FieldTypes;
-import club.dreiachteins.zmrl.fieldTypes.*;
+import club.dreiachteins.zmrl.playingField.fieldTypes.*;
 
+import java.util.Arrays;
 import java.util.Hashtable;
 
-public class PlayingFieldGenerator {
+public class PlayingField {
     private final Hashtable<Integer, Field> fieldTable;
 
-    private PlayingFieldGenerator(Builder builder){
+    private PlayingField(Builder builder){
         this.fieldTable = builder.fieldTable;
     }
 
     public Hashtable<Integer, Field> getFieldTable() {
         return this.fieldTable;
     }
+
+    // ______________________________________| TO STRING |__________________________________________________\\
+
+    @Override
+    public String toString() {
+        Field[] temp = new Field[fieldTable.size()];
+        fieldTable.forEach((k, v) -> {
+            temp[k] = v;
+        } );
+        return Arrays.toString(temp);
+    }
+
 
     // ______________________________________| BUILDER |__________________________________________________\\
 
@@ -77,8 +89,8 @@ public class PlayingFieldGenerator {
             return this;
         }
 
-        public PlayingFieldGenerator build(){
-            return new PlayingFieldGenerator(this);
+        public PlayingField build(){
+            return new PlayingField(this);
         }
 
     }
