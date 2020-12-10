@@ -12,6 +12,8 @@ public class PlayingField {
         this.fieldTable = builder.fieldTable;
     }
 
+    // ______________________________________| TO STRING |__________________________________________________\\
+
     public Hashtable<Integer, Field> getFieldTable() {
         return this.fieldTable;
     }

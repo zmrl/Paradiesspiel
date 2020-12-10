@@ -1,22 +1,27 @@
 package club.dreiachteins.zmrl.player;
 
+import club.dreiachteins.zmrl.enums.Farbe;
+import club.dreiachteins.zmrl.playingField.Field;
+
 import java.util.Objects;
 
 /**
  * Spielfigur
  */
 public class Token {
-    private final String name;
+    private final Farbe farbe;
+    private final String prefix;
     private int position = 0;
     private final int tokenNumber;
 
     public Token(Builder builder){
-        this.name = builder.name;
+        this.farbe = builder.farbe;
+        this.prefix = builder.prefix;
         this.tokenNumber = builder.tokenNumber;
     }
 
-    public String getName() {
-        return this.name;
+    public Farbe getFarbe() {
+        return this.farbe;
     }
 
     public int getPosition() {
@@ -34,15 +39,21 @@ public class Token {
 
     @Override
     public String toString() {
-        return this.name + ":" + this.position;
+        return this.farbe + this.prefix + ":" + this.position;
     }
 
     public static class Builder {
-        private String name;
+        private Farbe farbe;
+        private String prefix;
         private int tokenNumber;
 
-        public Builder setName(String name) {
-            this.name = name;
+        public Builder setFarbe(Farbe farbe) {
+            this.farbe = farbe;
+            return this;
+        }
+
+        public Builder setPrefix(String prefix){
+            this.prefix = prefix;
             return this;
         }
 

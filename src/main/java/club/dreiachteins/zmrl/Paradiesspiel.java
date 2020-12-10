@@ -4,6 +4,9 @@ import club.dreiachteins.zmrl.enums.Farbe;
 import club.dreiachteins.zmrl.player.Party;
 import club.dreiachteins.zmrl.playingField.PlayingField;
 
+import java.awt.*;
+import java.util.Arrays;
+
 /**
  * Paradiesspiel Super
  */
@@ -48,7 +51,7 @@ public class Paradiesspiel {
     }
 
     public Farbe getGewinner() {
-        return Farbe.BLAU;
+        return Farbe.GELB;
     }
 
     public int getFigurposition(String figur) {

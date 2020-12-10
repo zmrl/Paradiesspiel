@@ -2,6 +2,7 @@ package club.dreiachteins.zmrl.player;
 
 import club.dreiachteins.zmrl.enums.Farbe;
 import club.dreiachteins.zmrl.exceptions.FalscheSpielerzahlException;
+import club.dreiachteins.zmrl.playingField.Field;
 
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -49,7 +50,7 @@ public class Party {
         this.playerOnTurn = farbe;
     }
 
-    // ______________________________________| IS |__________________________________________________\\
+    // ______________________________________| IS / HAS |__________________________________________________\\
 
     private boolean isToken(String token){
         return tokenTable.containsKey(token);
@@ -103,24 +104,24 @@ public class Party {
         private static final int MAX_PLAYER = 6;
         private static final int MIN_PLAYER = 2;
 
-        public Builder setFarbe(Farbe... farben) {
-            this.farben = farben;
-            return this;
+        public Builder setFarbe(Farbe... farben) throws FalscheSpielerzahlException {
+            if (!(isValidPlayerCount(farben.length))) {
+                throw new FalscheSpielerzahlException(farben.length);
+            } else {
+                this.farben = farben;
+                return this;
+            }
         }
 
-        public Builder setPlayerTable() throws FalscheSpielerzahlException{
+        public Builder setPlayerTable() {
 
-            if(!(isValidPlayerCount(this.farben.length))) {
-                throw new FalscheSpielerzahlException(this.farben.length);
-            } else {
-                this.playerTable = new Hashtable<>();
-                int tokenNumber = 0;
-                int playerCounter = 0;
-                for (Farbe colour : this.farben) {
-                    this.playerTable.put(colour, new Player.Builder()
-                            .setColour(colour).setPlayerCount(playerCounter++)
-                            .build());
-                }
+            this.playerTable = new Hashtable<>();
+            int tokenNumber = 0;
+            int playerCounter = 0;
+            for (Farbe colour : this.farben) {
+                this.playerTable.put(colour, new Player.Builder()
+                        .setColour(colour).setPlayerCount(playerCounter++)
+                        .build());
             }
             return this;
         }
@@ -128,8 +129,6 @@ public class Party {
         private boolean isValidPlayerCount(int i) {
             return i >= MIN_PLAYER && i <= MAX_PLAYER;
         }
-
-
 
         public Builder setTokenTable(String className){
 
@@ -146,20 +145,17 @@ public class Party {
                 for(int i = 0; i < maxTokens; i++) {
                     String name = farbe + appendix[i];
                     this.tokenTable.put(name, new Token.Builder()
-                            .setName(name)
+                            .setFarbe(farbe).setPrefix(appendix[i])
                             .setTokenNumber(counter++)
                             .build());
                 }
             }
-
             return this;
         }
-
 
         public Party build(){
             return new Party(this);
         }
-
     }
 
     /* ______________________________________| BIN |__________________________________________________
