@@ -12,4 +12,8 @@ public class ParadiesspielWinter extends Paradiesspiel{
         super(farben);
     }
 
+    public ParadiesspielWinter (String conf, Farbe... farben){
+        super(conf, farben);
+    }
+
 }

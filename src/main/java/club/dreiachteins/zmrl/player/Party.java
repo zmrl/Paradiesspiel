@@ -10,13 +10,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Party {
 
+    public static final int ZERO = 0;
     private final Hashtable<Farbe, Player> playerTable;
     private final Hashtable<String, Token> tokenTable;
     private Farbe playerOnTurn;
+    private Farbe[] gewinner;
 
     private Party(Builder builder) {
         this.playerTable = builder.playerTable;
         this.tokenTable = builder.tokenTable;
+        this.playerOnTurn = builder.playerOnTurn;
+        this.gewinner = builder.gewinner;
+
     }
 
     // ______________________________________| GET |__________________________________________________\\
@@ -29,12 +34,27 @@ public class Party {
         return temp;
     }
 
-    public Player getPlayerByName(Farbe farbe){
-        return this.playerTable.get(farbe);
+    public void setGewinner(int i){
+        tokenTable.forEach((k, v) -> {
+            if (v.getPosition() == i){
+                gewinner[v.getTokenNumber()] = v.getFarbe();
+            }
+        });
     }
 
-    public Player getPLayerByTokenName(String token){
-        return getPlayerByName(Farbe.valueOf(token.split("-")[0]));
+    public Farbe getGewinner(){
+        for(int i = ZERO; i < this.tokenTable.size(); i+=(this.tokenTable.size()/this.playerTable.size())){
+            int count = ZERO;
+            for(int j = ZERO; j < (this.tokenTable.size()/this.playerTable.size()); j++){
+                if (this.gewinner[i+j] != null){
+                    count++;
+                }
+                if (count == (this.tokenTable.size()/this.playerTable.size())){
+                    return this.gewinner[i];
+                }
+            }
+        }
+        return null;
     }
 
     public int getPositionFromToken(String token) {
@@ -44,10 +64,18 @@ public class Party {
         return -1;
     }
 
+    public Token getToken(String token) {
+        return this.tokenTable.get(token);
+    }
+
     // ______________________________________| SET |__________________________________________________\\
 
     public void setPlayerOnTurn(Farbe farbe) {
         this.playerOnTurn = farbe;
+    }
+
+    public boolean setPosition(String token, int i){
+        return this.tokenTable.get(token).setPosition(i);
     }
 
     // ______________________________________| IS / HAS |__________________________________________________\\
@@ -57,15 +85,16 @@ public class Party {
     }
 
     private boolean isTokenFromPlayer(String token){
-        return this.playerOnTurn == (Farbe.valueOf(token.split("-")[0]));
+        return this.playerOnTurn == (Farbe.valueOf(token.split("-")[ZERO]));
     }
 
     // ______________________________________| Methods |__________________________________________________\\
 
-    public boolean moveToken(String token, int i, int j) {
+    public boolean moveToken(String token, int i) {
         if(isToken(token) && isTokenFromPlayer(token)){
-            return tokenTable.get(token).setPosition((i+j));
+            return tokenTable.get(token).setPosition((i));
         }
+        System.out.print("WrongPlayer. " + playerOnTurn + " ist dran");
         return false;
     }
 
@@ -98,6 +127,9 @@ public class Party {
         private Hashtable<Farbe, Player> playerTable;
         private final Hashtable<String, Token> tokenTable = new Hashtable<>();
         private Farbe[] farben;
+        private Farbe[] gewinner;
+        private Farbe playerOnTurn;
+
 
         private static final int MAX_TOKENS_PER_PLAYER = 2;
         private static final int MAX_TOKENS_PER_PLAYER_WINTER = 3;
@@ -109,15 +141,20 @@ public class Party {
                 throw new FalscheSpielerzahlException(farben.length);
             } else {
                 this.farben = farben;
+                setFarbeAmZug();
                 return this;
             }
+        }
+
+        public void setFarbeAmZug(){
+            this. playerOnTurn = this.farben[ZERO];
         }
 
         public Builder setPlayerTable() {
 
             this.playerTable = new Hashtable<>();
-            int tokenNumber = 0;
-            int playerCounter = 0;
+            int tokenNumber = ZERO;
+            int playerCounter = ZERO;
             for (Farbe colour : this.farben) {
                 this.playerTable.put(colour, new Player.Builder()
                         .setColour(colour).setPlayerCount(playerCounter++)
@@ -140,9 +177,9 @@ public class Party {
             }
 
             String[] appendix = {"-A", "-B", "-C"};
-            int counter = 0;
+            int counter = ZERO;
             for(Farbe farbe : this.farben){
-                for(int i = 0; i < maxTokens; i++) {
+                for(int i = ZERO; i < maxTokens; i++) {
                     String name = farbe + appendix[i];
                     this.tokenTable.put(name, new Token.Builder()
                             .setFarbe(farbe).setPrefix(appendix[i])
@@ -150,7 +187,12 @@ public class Party {
                             .build());
                 }
             }
+            setGewinner();
             return this;
+        }
+
+        private void setGewinner() {
+            this.gewinner = new Farbe[this.tokenTable.size()];
         }
 
         public Party build(){

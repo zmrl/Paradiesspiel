@@ -13,6 +13,6 @@ public class FalscheSpielerzahlException extends RuntimeException{
     }
 
     public String getAmount(){
-        return "Amount of Players: " + this.amount + " --> Min 2 club.dreiachteins.zmrl.player.Player or Max 6 club.dreiachteins.zmrl.player.Player";
+        return "This amount of Player: " + this.amount + " --> Min 2 | Max 6";
     }
 }

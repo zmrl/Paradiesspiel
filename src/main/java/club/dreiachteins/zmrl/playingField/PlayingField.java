@@ -1,5 +1,6 @@
 package club.dreiachteins.zmrl.playingField;
 
+import club.dreiachteins.zmrl.enums.FieldTypes;
 import club.dreiachteins.zmrl.playingField.fieldTypes.*;
 
 import java.util.Arrays;
@@ -12,10 +13,18 @@ public class PlayingField {
         this.fieldTable = builder.fieldTable;
     }
 
-    // ______________________________________| TO STRING |__________________________________________________\\
+    // ______________________________________| GET |__________________________________________________\\
 
     public Hashtable<Integer, Field> getFieldTable() {
         return this.fieldTable;
+    }
+
+    public Field getField(int i) {
+        return this.fieldTable.get(i);
+    }
+
+    public int getFieldLength(){
+        return this.fieldTable.size();
     }
 
     // ______________________________________| TO STRING |__________________________________________________\\
@@ -27,6 +36,18 @@ public class PlayingField {
             temp[k] = v;
         } );
         return Arrays.toString(temp);
+    }
+
+    public int checkBruecke(int i) {
+        if (this.fieldTable.get(i).getType() == FieldTypes.BÜCKE){
+            return i + i;
+        } else {
+            return i;
+        }
+    }
+
+    public boolean checkParadies(int i){
+        return this.fieldTable.get(i).getType() == FieldTypes.PARADIES;
     }
 
 

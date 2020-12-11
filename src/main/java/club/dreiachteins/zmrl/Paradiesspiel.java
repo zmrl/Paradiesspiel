@@ -4,7 +4,6 @@ import club.dreiachteins.zmrl.enums.Farbe;
 import club.dreiachteins.zmrl.player.Party;
 import club.dreiachteins.zmrl.playingField.PlayingField;
 
-import java.awt.*;
 import java.util.Arrays;
 
 /**
@@ -16,6 +15,7 @@ public class Paradiesspiel {
 
     public PlayingField playingField;
     public Party party;
+    public Farbe gewinner;
 
     // _____________________________________________________ CONSTRUCTOR _______________________________________ //
 
@@ -24,6 +24,8 @@ public class Paradiesspiel {
     }
 
     public Paradiesspiel(String conf, Farbe... farben) {
+        this.init(farben);
+        this.configuration(conf);
 
     }
 
@@ -38,10 +40,55 @@ public class Paradiesspiel {
                 .build();
     }
 
+    private void configuration(String conf){
+        String[] temp = conf.replace(", ", ":").split(":");
+        for(int i = 0; i < temp.length; i = i+2){
+            this.setFigurPostiton(temp[i], Integer.parseInt(temp[i+1]));
+        }
+    }
+
     // _____________________________________________________ METHODS _______________________________________ //
 
     public boolean bewegeFigur(String s, int i, int i1) {
-        return party.moveToken(s, i, i1);
+        if(this.gewinner != null) {
+            return false;
+        }
+
+        else if (this.party.getToken(s) == null) {
+            return false;
+        }
+
+        else if (this.playingField.checkParadies(this.party.getToken(s).getPosition())){
+            return false;
+        }
+
+        else {
+            int position = party.getPositionFromToken(s);
+            int j = 0;
+
+            if(position == -1){
+                return false;
+            }
+
+            for(; j < (i + i1); j++) {
+                if (!(position + 1 >= this.playingField.getFieldLength())) {
+                    position = this.playingField.checkBruecke(++position);
+                } else {
+                    break;
+                }
+            }
+
+            for(; j < (i + i1); j++) {
+                --position;
+            }
+            if (this.playingField.checkParadies(position)){
+                this.party.getToken(s).setInParadise();
+            }
+            boolean temp = party.moveToken(s, position);
+            this.party.setGewinner(this.playingField.getFieldLength() - 1);
+            return temp;
+        }
+
     }
 
     // _____________________________________________________ GET _______________________________________ //
@@ -51,7 +98,7 @@ public class Paradiesspiel {
     }
 
     public Farbe getGewinner() {
-        return Farbe.GELB;
+        return this.gewinner = this.party.getGewinner();
     }
 
     public int getFigurposition(String figur) {
@@ -62,6 +109,14 @@ public class Paradiesspiel {
 
     public void setFarbeAmZug(Farbe farbe) {
         this.party.setPlayerOnTurn(farbe);
+    }
+
+    public void setFigurPostiton(String figur, int position) {
+        this.party.setPosition(figur, position);
+    }
+
+    private void setGewinner(Farbe farbe){
+        this.gewinner = farbe;
     }
 
     // _____________________________________________________ TO STRING _______________________________________ //

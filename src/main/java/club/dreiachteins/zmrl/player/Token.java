@@ -13,6 +13,7 @@ public class Token {
     private final String prefix;
     private int position = 0;
     private final int tokenNumber;
+    private boolean inParadies = false;
 
     public Token(Builder builder){
         this.farbe = builder.farbe;
@@ -35,6 +36,14 @@ public class Token {
     public boolean setPosition(int position) {
         this.position = position;
         return true;
+    }
+
+    public boolean setInParadise(){
+        return this.inParadies = true;
+    }
+
+    public boolean isInParadies() {
+        return inParadies;
     }
 
     @Override
